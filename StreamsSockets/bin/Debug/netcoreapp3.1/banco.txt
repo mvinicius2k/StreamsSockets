@@ -1,0 +1,2 @@
+﻿Nome=Ninguem;Cpf=123;Idade=12
+Nome=Alguem;Cpf=415;Idade=14
