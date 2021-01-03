@@ -14,11 +14,10 @@ namespace StreamsSockets {
         public string GetCpfFormatado() {
             string retorno = "";
             char[] cpfc = Cpf.ToString().ToCharArray();
-
             for (int i = 0; i < cpfc.Length; i++) {
                 retorno += cpfc[i];
                 if (i % 3 == 2)
-                    if (i == 11)
+                    if (i == 8)
                         retorno += "-";
                     else
                         retorno += ".";
@@ -45,23 +44,28 @@ namespace StreamsSockets {
             Console.Write("\nNome: ");
             p.Nome = Console.ReadLine();
 
-            gCpf:
-            Console.Write("\nCpf: ");
-            try {
-                p.Cpf = Convert.ToInt64(Console.ReadLine());
-            } catch {
-                Console.WriteLine("Digite somente os números");
-                goto gCpf;
-            }
-            
-            gIdade:
-            Console.Write("Idade: ");
-            try {
-                p.Idade = Convert.ToInt32(Console.ReadLine());
-            } catch {
-                Console.WriteLine("Digite em números");
-                goto gIdade;
-            }
+            bool loop = true;
+            do {                
+                Console.Write("\nCpf: ");
+                try {
+                    p.Cpf = Convert.ToInt64(Console.ReadLine());
+                    loop = false;
+                } catch {
+                    Console.WriteLine("Digite somente os números");
+                    
+                } 
+            } while (loop);
+
+            loop = true;
+            do {
+                Console.Write("Idade: ");
+                try {
+                    p.Idade = Convert.ToInt32(Console.ReadLine());
+                    loop = false;
+                } catch {
+                    Console.WriteLine("Digite em números");
+                } 
+            } while (loop);
 
             return p;
         }

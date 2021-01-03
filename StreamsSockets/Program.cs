@@ -2,28 +2,81 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Net.Sockets;
 
 namespace StreamsSockets {
     class Program {
+        public static string div = "-----------------------------------------";
+        public static string caminho = Environment.CurrentDirectory + "\\StreamsSockets.exe";
+
+        static bool novaJanela = false;
+
+
+        private static void NovaJanela() {
+            if (novaJanela)
+                return;
+            try {
+                Process.Start("cmd.exe", "/c \"start cmd /c \"" + caminho + "\" -n");
+            } catch {
+                //só funciona no windows
+            }
+        }
 
         
 
+
+
+
+
+
+
+
+
         static void Main(string[] args) {
-            string div = "-----------------------------------------";
+            /*
+            if(args.Length == 1) {
+                if (args[0] == "-n")
+                    novaJanela = true;
+            }
+            */
             BancoContas bancoContas = new BancoContas();
 
-            gMain:
-            Console.Clear();
-            Console.Write("1 - Cadastrar e enviar pessoas (Questão 1)\n2 - Iniciar servidor (Questão 2)\n3 - Banco (Questão 3)\n\n> ");
+            while (true) {
+                Console.Clear();
+                Console.Write("1 - Cadastrar e enviar pessoas (Questão 1)\n2 - Iniciar servidor (Questão 2)\n3 - Banco (Questão 3)\n4 - OutputStreamWriter (Questão 4)\n5 - InputStreamReader (Questão 5)\n0 - Sair\n\n> ");
 
 
-            string op = Console.ReadLine();
+                string op = Console.ReadLine();
+
+                switch (op) {
+                    case "1":
+                        Q1();
+                        break;
+                    case "2":
+                        Q2();
+                        break;
+                    case "3":
+                        Q3();
+                        break;
+                    case "4":
+                        Q4();
+                        break;
+                    case "5":
+                        Q5();
+                        break;
+                    case "0":
+                        return;
+
+                } 
+            }
 
 
-            if (op == "1") {
+            //Questões
+
+            void Q1() {
                 File.Delete(PessoasOutputStream.caminho);
 
-                gCadastrando:
 
                 bool cadastrando = true;
                 do {
@@ -43,12 +96,12 @@ namespace StreamsSockets {
                     else if (op2 == "3")
                         bancoContas.listPessoas.Clear();
                     else if (op2 == "4")
-                        goto gMain;
+                        return;
 
 
 
                 } while (cadastrando);
-                 
+
                 Console.WriteLine("\n" + div + "\n");
                 Console.Write($"IP do destino: ");
                 string ip = Console.ReadLine();
@@ -57,19 +110,17 @@ namespace StreamsSockets {
 
                 string porta = Console.ReadLine();
                 PessoasOutputStream pOut = null;
-               
+
                 pOut = new PessoasOutputStream(bancoContas.listPessoas, ip, Convert.ToInt32(porta));
-                
+
 
                 pOut.Enviar();
 
 
                 Console.ReadLine();
+            }
 
-                goto gCadastrando;
-
-            } else if (op == "2") {
-                string caminho = Environment.CurrentDirectory + "\\StreamsSockets.exe";
+            void Q2() {
                 File.Delete(PessoasInputStream.caminho);
 
 
@@ -78,23 +129,25 @@ namespace StreamsSockets {
                 Console.Clear();
                 Console.Write("Porta: ");
                 string porta = Console.ReadLine();
-
-                try {
-                    Process.Start("cmd.exe", "/c \"start cmd /c \"" + caminho + "\"");
-                } catch {
-                    //só funciona no windows
-                }
-                
-
-
+                NovaJanela();
 
                 var pIn = new PessoasInputStream(Convert.ToInt32(porta));
                 pIn.Iniciar();
+            }
 
-                
-            } else if(op == "3") {
-                gBanco:
+            void Q3() {
                 Console.Clear();
+                try {
+                    var arquivos = Directory.EnumerateFiles(Environment.CurrentDirectory);
+                    foreach (string s in arquivos) {
+                        Console.WriteLine(s.Split('\\').Last());
+                    }
+                } catch {
+
+                }
+
+                Console.WriteLine(div);
+
                 Console.Write("1 - Salvar\n2 - Carregar\n3 - Voltar\n\n> ");
                 string op2 = Console.ReadLine();
 
@@ -103,12 +156,12 @@ namespace StreamsSockets {
                     case "1":
                         Console.WriteLine("\n" + div);
                         Console.Write("Nome do arquivo: ");
-                        try{
+                        try {
                             bancoContas.gravarContasArquivo(Console.ReadLine());
                             Console.WriteLine("Salvo com sucesso");
                         } catch (IOException e) {
                             Console.WriteLine("Erro de IO: " + e.Message);
-                        } catch (Exception ex){
+                        } catch (Exception ex) {
                             Console.WriteLine("Erro" + ex.Message);
                         }
 
@@ -120,26 +173,66 @@ namespace StreamsSockets {
                         try {
                             bancoContas.carregarContasArquivo(Console.ReadLine());
                             Console.WriteLine("Carregado com sucesso");
-                            
+
                         } catch (IOException e) {
                             Console.WriteLine("Erro de IO: " + e.Message);
-                        } catch (Exception ex){
+                        } catch (Exception ex) {
                             Console.WriteLine("Erro" + ex.Message);
                         }
 
                         Console.ReadLine();
 
                         break;
-                       
+
                     case "3":
-                        goto gMain;
-                    
+                        return;
+
 
                 }
+            }
+            
+            void Q4() {
 
-                goto gBanco;
+                try {
+                    File.Delete(InvertCaseWriter.caminho);
+                } catch (Exception) {
+                    
+                }
+
+                Console.Clear();
+                Console.Write("\nIP: ");
+                string ip = Console.ReadLine();
+                Console.Write("\nPorta: ");
+                int porta = Convert.ToInt32(Console.ReadLine());
+
+                InvertCaseWriter invertCaseWriter = new InvertCaseWriter(ip, porta);
+                invertCaseWriter.Iniciar();
+
+
 
             }
+
+            void Q5() {
+                try {
+                    File.Delete(InvertCaseReader.caminho);
+                } catch (Exception) {
+
+                }
+                Console.Clear();
+                Console.Write("Porta: ");
+                int porta = Convert.ToInt32(Console.ReadLine());
+                
+
+                NovaJanela();
+
+                InvertCaseReader invertCaseReader = new InvertCaseReader(porta);
+                invertCaseReader.Ler();
+            }
         }
+
+
     }
 }
+
+    
+

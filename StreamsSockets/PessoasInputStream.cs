@@ -13,6 +13,7 @@ namespace StreamsSockets {
         public List<Pessoa> PessoasList = new List<Pessoa>();
         public static string caminho = Environment.CurrentDirectory + "\\PessoasInputStream.txt";
         private bool primeiraMsg = true;
+        private bool sair = false;
 
         public PessoasInputStream(int porta) {
             Porta = porta;
@@ -20,11 +21,15 @@ namespace StreamsSockets {
             
         }
 
+        
+
         public void Iniciar() {
+
+
             IPEndPoint ipe = new IPEndPoint(IPAddress.Any, Porta);
             
             UdpClient servidor = new UdpClient(ipe);
-
+            Console.WriteLine("\n[Enter] Voltar\n" + Program.div);
             Console.WriteLine("Servidor iniciado, escutando... ");
             File.AppendAllText(caminho,"Servidor iniciado, escutando... \n", Encoding.UTF8);
 
@@ -32,6 +37,9 @@ namespace StreamsSockets {
             
             while (true) {
                 Thread.Sleep(1000);
+
+                
+
                 byte[] bytes = servidor.Receive(ref ipe);
 
                 BinaryFormatter bf = new BinaryFormatter();
@@ -46,6 +54,8 @@ namespace StreamsSockets {
                     if (primeiraMsg) {
                         Console.Clear();
                         primeiraMsg = false;
+
+                        Console.WriteLine("[Enter] Voltar\n" + Program.div);
                     }
 
 

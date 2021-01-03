@@ -59,29 +59,33 @@ namespace StreamsSockets {
 
 
         private Socket SocketConectar() {
-        SocketConectar:
-            IPAddress ip = IPAddress.Parse(IP);
-            IPEndPoint ipe = new IPEndPoint(ip, Porta);
-            Socket socket = new Socket(ipe.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
-            
-            try {
-                socket.Connect(ipe);
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-            }
-            
 
-            if (socket.Connected) {
-                Console.WriteLine("Conectado");
-                File.AppendAllText(caminho, "Conectado\n", Encoding.UTF8);
-                return socket;
-            } else {
+            do {
+                IPAddress ip = IPAddress.Parse(IP);
+                IPEndPoint ipe = new IPEndPoint(ip, Porta);
+                Socket socket = new Socket(ipe.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
+
+                try {
+                    socket.Connect(ipe);
+                } catch (Exception e) {
+                    Console.WriteLine("Não ouve conexão: " + e.Message);
+                }
+
+
+                if (socket.Connected) {
+                    Console.WriteLine("Conectado");
+                    File.AppendAllText(caminho, "Conectado\n", Encoding.UTF8);
+                    return socket;
+                }
+
+
                 Console.WriteLine("Servidor não iniciado, tentando novamente...");
                 File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
                 Thread.Sleep(1000);
-                goto SocketConectar;
+                    
 
-            }
+                 
+            } while (true);
             
         }
 
