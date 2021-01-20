@@ -20,10 +20,13 @@ namespace StreamsSockets {
 
             try {
                 File.WriteAllText(Environment.CurrentDirectory + "\\" + nomeArquivo, txt, Encoding.UTF8);
-            } catch (Exception) {
+            } catch (IOException) {
                 throw;
+            } catch (Exception e) {
+                Console.WriteLine("Erro ao escrever arquivo. " + e.Message);
             }
-            
+
+
         }
 
         /// <exception cref="IOException"></exception>

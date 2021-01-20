@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 
 namespace StreamsSockets {
     class InvertCaseWriter {
@@ -34,7 +31,12 @@ namespace StreamsSockets {
                     Console.Write("\n> ");
 
                     saida = Console.ReadLine();
-                    File.AppendAllText(caminho, saida + "\n");
+                    try {
+                        File.AppendAllText(caminho, saida + "\n");
+                    } catch (Exception e) {
+                        Console.WriteLine("Erro ao escrever no arquivo: " + e.Message);
+                    }
+                    
                     sw.WriteLine(InverterStr(saida));
                     sw.Flush();
                 } while (saida.Length != 0);
@@ -62,7 +64,12 @@ namespace StreamsSockets {
 
         private void Print(string str) {
             Console.WriteLine(str);
-            File.AppendAllText(caminho, str + "\n");
+            try {
+                File.AppendAllText(caminho, str + "\n");
+            } catch (Exception e) {
+                Console.WriteLine("Erro ao escrever no arquivo: " + e.Message );
+            }
+            
         }
     }
 }

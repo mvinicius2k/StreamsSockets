@@ -43,7 +43,12 @@ namespace StreamsSockets {
 
                     socket.Send(dadosOut, dadosOut.Length, SocketFlags.None);
                     Console.WriteLine("Pessoa " + index++ + " enviada.");
-                    File.AppendAllText(caminho, "Pessoa " + index++ + " enviada." + p.ToString() + "\n", Encoding.UTF8);
+                    try {
+                        File.AppendAllText(caminho, "Pessoa " + index++ + " enviada." + p.ToString() + "\n", Encoding.UTF8);
+                    } catch (Exception e) {
+                        Console.WriteLine("Erro ao escrever arquivo " + e.Message);
+                    }
+                    
 
                 }
 
@@ -68,19 +73,29 @@ namespace StreamsSockets {
                 try {
                     socket.Connect(ipe);
                 } catch (Exception e) {
-                    Console.WriteLine("Não ouve conexão: " + e.Message);
+                    Console.WriteLine("Não houve conexão: " + e.Message);
                 }
 
 
                 if (socket.Connected) {
                     Console.WriteLine("Conectado");
-                    File.AppendAllText(caminho, "Conectado\n", Encoding.UTF8);
+                    try {
+                        File.AppendAllText(caminho, "Conectado\n", Encoding.UTF8);
+                    } catch (Exception e) {
+                        Console.WriteLine("Erro ao escrever arquivo " + e.Message);
+                    }
+                    
                     return socket;
                 }
 
 
                 Console.WriteLine("Servidor não iniciado, tentando novamente...");
-                File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
+                try {
+                    File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
+                } catch (Exception e) {
+                    File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
+                }
+                
                 Thread.Sleep(1000);
                     
 

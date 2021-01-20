@@ -1,9 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿/*
+ *
+ * Link do git: https://github.com/mvinicius2k/StreamsSockets.git
+ *
+ */
+
+
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 
 namespace StreamsSockets {
     class Program {
@@ -44,7 +49,7 @@ namespace StreamsSockets {
 
             while (true) {
                 Console.Clear();
-                Console.Write("1 - Cadastrar e enviar pessoas (Questão 1)\n2 - Iniciar servidor (Questão 2)\n3 - Banco (Questão 3)\n4 - OutputStreamWriter (Questão 4)\n5 - InputStreamReader (Questão 5)\n0 - Sair\n\n> ");
+                Console.Write("1 - Cadastrar e enviar pessoas (Questão 1)\n2 - Iniciar servidor (Questão 2)\n3 - Banco (Questão 3)\n4 - OutputStreamWriter (Questão 4)\n5 - InputStreamReader (Questão 5)\n6 - Abrir uma nova janela\n0 - Sair\n\n> ");
 
 
                 string op = Console.ReadLine();
@@ -64,6 +69,9 @@ namespace StreamsSockets {
                         break;
                     case "5":
                         Q5();
+                        break;
+                    case "6":
+                        NovaJanela();
                         break;
                     case "0":
                         return;
@@ -143,7 +151,7 @@ namespace StreamsSockets {
                         Console.WriteLine(s.Split('\\').Last());
                     }
                 } catch {
-
+                    Console.WriteLine("Não foi possível imprimir os arquivos da pasta");
                 }
 
                 Console.WriteLine(div);
@@ -161,8 +169,6 @@ namespace StreamsSockets {
                             Console.WriteLine("Salvo com sucesso");
                         } catch (IOException e) {
                             Console.WriteLine("Erro de IO: " + e.Message);
-                        } catch (Exception ex) {
-                            Console.WriteLine("Erro" + ex.Message);
                         }
 
                         Console.ReadLine();
@@ -176,8 +182,6 @@ namespace StreamsSockets {
 
                         } catch (IOException e) {
                             Console.WriteLine("Erro de IO: " + e.Message);
-                        } catch (Exception ex) {
-                            Console.WriteLine("Erro" + ex.Message);
                         }
 
                         Console.ReadLine();
@@ -195,8 +199,7 @@ namespace StreamsSockets {
 
                 try {
                     File.Delete(InvertCaseWriter.caminho);
-                } catch (Exception) {
-                    
+                } catch {
                 }
 
                 Console.Clear();

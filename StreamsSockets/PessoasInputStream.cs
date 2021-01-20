@@ -31,7 +31,12 @@ namespace StreamsSockets {
             UdpClient servidor = new UdpClient(ipe);
             Console.WriteLine("\n[Enter] Voltar\n" + Program.div);
             Console.WriteLine("Servidor iniciado, escutando... ");
-            File.AppendAllText(caminho,"Servidor iniciado, escutando... \n", Encoding.UTF8);
+            try {
+                File.AppendAllText(caminho, "Servidor iniciado, escutando... \n", Encoding.UTF8);
+            } catch(Exception e) {
+                Console.WriteLine("Erro ao escrever no arquivo. " + e.Message);
+            }
+            
 
 
             
@@ -60,7 +65,12 @@ namespace StreamsSockets {
 
 
                     Console.WriteLine($"[{ipe}]\n{p.ToString()}\n");
-                    File.AppendAllText(caminho, $"[]\n{p.ToString()}\n\n", Encoding.UTF8);
+                    try {
+                        File.AppendAllText(caminho, $"[]\n{p.ToString()}\n\n", Encoding.UTF8);
+                    } catch (Exception e) {
+                        Console.WriteLine("Erro ao escrever no arquivo. " + e.Message);
+                    }
+                    
                 }
 
             }
