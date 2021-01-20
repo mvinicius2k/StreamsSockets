@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace StreamsSockets {
     class InvertCaseReader {
@@ -15,19 +16,33 @@ namespace StreamsSockets {
             Porta = porta;
         }
 
+        private void Sair() {
+            while (true) {
+                string s = Console.ReadLine().ToLower();
+                if (s == "n") {
+                    Program.NovaJanela();
+                }
+            }
+
+
+
+
+        }
+
         public void Ler() {
-            Print("Esperando conexão");
+            new Thread(Sair).Start();
+            Print("N - Nova Janela\n\nEsperando conexão");
             TcpListener escutador = new TcpListener(IPAddress.Any, Porta);
             string entrada = "";
             escutador.Start();
-
-            using(Socket socket = escutador.AcceptSocket())
+            
+            using (Socket socket = escutador.AcceptSocket())
             using (NetworkStream ns = new NetworkStream(socket))
             using (StreamReader sr = new StreamReader(ns, Encoding.UTF8)) {
                 Print("Conexão feita, escutando...\n" + Program.div + "\n");
                 do {
-                    
 
+                    Thread.Sleep(200);
 
                     byte[] resposta = Encoding.UTF8.GetBytes(entrada);
                     try {

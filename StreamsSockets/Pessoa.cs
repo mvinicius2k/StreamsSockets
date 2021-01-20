@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace StreamsSockets {
     [Serializable]
-    class Pessoa {
+    class Pessoa{
         public string Nome { get; set; }
 
         public long Cpf { get; set; }
@@ -69,5 +71,21 @@ namespace StreamsSockets {
 
             return p;
         }
+        /*
+        public override Type BindToType(string assemblyName, string typeName) {
+            Type tyType = null;
+            string sShortAssemblyName = assemblyName.Split(',')[0];
+
+            Assembly[] ayAssemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            foreach (Assembly ayAssembly in ayAssemblies) {
+                if (sShortAssemblyName == ayAssembly.FullName.Split(',')[0]) {
+                    tyType = ayAssembly.GetType(typeName);
+                    break;
+                }
+            }
+            return tyType;
+        }
+        */
     }
 }

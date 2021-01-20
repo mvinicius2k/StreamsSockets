@@ -21,6 +21,19 @@ namespace StreamsSockets {
             
         }
 
+        private void Sair() {
+            while (true) {
+                string s = Console.ReadLine().ToLower();
+               if (s == "n") {
+                    Program.NovaJanela();
+                }
+            }
+                
+            
+            
+            
+        }
+
         
 
         public void Iniciar() {
@@ -29,29 +42,40 @@ namespace StreamsSockets {
             IPEndPoint ipe = new IPEndPoint(IPAddress.Any, Porta);
             
             UdpClient servidor = new UdpClient(ipe);
-            Console.WriteLine("\n[Enter] Voltar\n" + Program.div);
+            Console.WriteLine("N - Nova Janela\n" + Program.div);
             Console.WriteLine("Servidor iniciado, escutando... ");
             try {
                 File.AppendAllText(caminho, "Servidor iniciado, escutando... \n", Encoding.UTF8);
             } catch(Exception e) {
                 Console.WriteLine("Erro ao escrever no arquivo. " + e.Message);
             }
-            
 
 
-            
+
+            new Thread(Sair).Start();
             while (true) {
                 Thread.Sleep(1000);
-
+                
+                if (sair) {
+                    Console.WriteLine("Q");
+                    return;
+                }
+                    
                 
 
                 byte[] bytes = servidor.Receive(ref ipe);
 
                 BinaryFormatter bf = new BinaryFormatter();
                 using (MemoryStream ms = new MemoryStream(bytes)) {
-
+                    
                     Pessoa p;
-                    dynamic dPessoa = bf.Deserialize(ms);
+                    dynamic dPessoa = null;
+                    try {
+                        dPessoa = bf.Deserialize(ms);
+                    } catch (Exception e) {
+                        Console.WriteLine(e.Message);
+                    }
+                    
 
                     p = new Pessoa(dPessoa.Nome, dPessoa.Cpf, dPessoa.Idade);
                     PessoasList.Add(p);
@@ -60,7 +84,7 @@ namespace StreamsSockets {
                         Console.Clear();
                         primeiraMsg = false;
 
-                        Console.WriteLine("[Enter] Voltar\n" + Program.div);
+                        Console.WriteLine("N - Nova Janela\n" + Program.div);
                     }
 
 

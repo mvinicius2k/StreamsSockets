@@ -18,9 +18,8 @@ namespace StreamsSockets {
         static bool novaJanela = false;
 
 
-        private static void NovaJanela() {
-            if (novaJanela)
-                return;
+        public static void NovaJanela() {
+            
             try {
                 Process.Start("cmd.exe", "/c \"start cmd /c \"" + caminho + "\" -n");
             } catch {
@@ -39,12 +38,7 @@ namespace StreamsSockets {
 
 
         static void Main(string[] args) {
-            /*
-            if(args.Length == 1) {
-                if (args[0] == "-n")
-                    novaJanela = true;
-            }
-            */
+            
             BancoContas bancoContas = new BancoContas();
 
             while (true) {
@@ -137,7 +131,6 @@ namespace StreamsSockets {
                 Console.Clear();
                 Console.Write("Porta: ");
                 string porta = Console.ReadLine();
-                NovaJanela();
 
                 var pIn = new PessoasInputStream(Convert.ToInt32(porta));
                 pIn.Iniciar();
@@ -226,7 +219,6 @@ namespace StreamsSockets {
                 int porta = Convert.ToInt32(Console.ReadLine());
                 
 
-                NovaJanela();
 
                 InvertCaseReader invertCaseReader = new InvertCaseReader(porta);
                 invertCaseReader.Ler();
