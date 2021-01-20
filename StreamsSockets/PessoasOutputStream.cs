@@ -93,7 +93,7 @@ namespace StreamsSockets {
                 try {
                     File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
                 } catch (Exception e) {
-                    File.AppendAllText(caminho, "Servidor não iniciado, tentando novamente...\n", Encoding.UTF8);
+                    Console.WriteLine("Não foi possível escrever o arquivo. " + e.Message);
                 }
                 
                 Thread.Sleep(1000);

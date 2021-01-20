@@ -13,17 +13,16 @@ using System.Linq;
 namespace StreamsSockets {
     class Program {
         public static string div = "-----------------------------------------";
-        public static string caminho = Environment.CurrentDirectory + "\\StreamsSockets.exe";
+        public static string caminho = Environment.CurrentDirectory + "\\" + AppDomain.CurrentDomain.FriendlyName;
 
-        static bool novaJanela = false;
 
 
         public static void NovaJanela() {
             
             try {
-                Process.Start("cmd.exe", "/c \"start cmd /c \"" + caminho + "\" -n");
-            } catch {
-                //só funciona no windows
+                Process.Start("cmd.exe", "/c \"start cmd /c \"" + caminho + "\"");
+            } catch (Exception e) {
+                Console.WriteLine("Só funciona no Windows. " + e.Message);
             }
         }
 

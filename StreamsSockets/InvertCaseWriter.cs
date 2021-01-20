@@ -36,9 +36,15 @@ namespace StreamsSockets {
                     } catch (Exception e) {
                         Console.WriteLine("Erro ao escrever no arquivo: " + e.Message);
                     }
+
+                    try {
+                        sw.WriteLine(InverterStr(saida));
+                        sw.Flush();
+                    } catch(Exception e) {
+                        Console.WriteLine("A mensagem não foi enviada. " + e.Message);
+                    }
                     
-                    sw.WriteLine(InverterStr(saida));
-                    sw.Flush();
+                    
                 } while (saida.Length != 0);
             }
 
