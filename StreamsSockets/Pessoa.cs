@@ -37,7 +37,10 @@ namespace StreamsSockets {
         }
 
         public override string ToString() {
-            return $"Nome: {Nome}\nCpf: {this.GetCpfFormatado()}\nIdade: {Idade}";
+
+            int tamanho = Encoding.UTF8.GetBytes(Nome).Length;
+
+            return $"Nome: {Nome} ({tamanho} bytes)\nCpf: {this.GetCpfFormatado()}\nIdade: {Idade}";
         }
 
         public static Pessoa Criar() {
@@ -71,21 +74,6 @@ namespace StreamsSockets {
 
             return p;
         }
-        /*
-        public override Type BindToType(string assemblyName, string typeName) {
-            Type tyType = null;
-            string sShortAssemblyName = assemblyName.Split(',')[0];
-
-            Assembly[] ayAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            foreach (Assembly ayAssembly in ayAssemblies) {
-                if (sShortAssemblyName == ayAssembly.FullName.Split(',')[0]) {
-                    tyType = ayAssembly.GetType(typeName);
-                    break;
-                }
-            }
-            return tyType;
-        }
-        */
+       
     }
 }
